@@ -9,6 +9,7 @@ public class Bot {
     Stock[] stockArr = new Stock[5];
     ArrayList<Double>[] dataArray = new ArrayList[stockArr.length];//An array of Arraylists<Doubles>
     double[] averages = new double[stockArr.length]; //need to set length of this array
+    double investmentValue = 0;
 
     public void generateStocks()
     {
@@ -83,12 +84,11 @@ public class Bot {
             dayCounter++;
         }
         Frank.printStockList();
-        System.out.println(Frank.balance);
-        /*for (int j = 0; j < Frank.stockList.size(); j++)
-        {
-            //Frank.stockList.get(j)*;
-            Frank.balance += Frank.sellStock(stockArr[], Frank.stockList.get(stockArr[i]));
-        }
-        System.out.println(Frank.balance);*/
+        System.out.printf("Your cash at hand is " + "%.2f", Frank.balance);
+        Frank.stockList.forEach((k, v) -> {
+            investmentValue += k.price*v;
+        });
+        System.out.println();
+        System.out.printf("Total value of assets is " + "%.2f", (Frank.balance + investmentValue));
     }
 }
