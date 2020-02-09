@@ -6,5 +6,6 @@ public class Main {
 	// write your code here
         Bot bank = new Bot();
         bank.generateStocks();
+        bank.analysis();
     }
 }

@@ -1,4 +1,6 @@
 package com.company;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Stock {
@@ -19,9 +21,9 @@ public class Stock {
         return price;
     }
 
-    public double[] pricesArray(int days)
+    public ArrayList<Double> pricesArray(int days)
     {
-        double[] array = new double[days];
+        ArrayList<Double> array = new ArrayList<>(days);
         Random rand = new Random();
         boolean bool;
         for(int i = 0; i < days; i++)
@@ -35,7 +37,7 @@ public class Stock {
             {
                 price -= ((rand.nextDouble()/12)*price)*rand.nextDouble();
             }
-            array[i] = price;
+            array.add(i, price);
         }
         return array;
     }

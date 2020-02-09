@@ -28,18 +28,15 @@ public class Investor {
     }
     public void sellStock(Stock stock, int shares)
     {
-        if(stockList.containsKey(stock))
-        {
-            if(stockList.get(stock)>=shares)
-            {
-                balance += (stock.price*shares);
-                stockList.put(stock, stockList.get(stock)-shares);
-            }
-            else
-                System.out.println("You only have "+stockList.get(stock)+" shares of "+stock.name+"!");
-        }
-        else
-          System.out.println("You don't have shares of "+stock.name+" to sell!");
+            if (stockList.containsKey(stock)) {
+                if (stockList.get(stock) >= shares) {
+                    balance += (stock.price * shares);
+                    stockList.put(stock, stockList.get(stock) - shares);
+                } else
+                    System.out.println("You only have " + stockList.get(stock) + " shares of " + stock.name + "!");
+            } else
+                System.out.println("You don't have shares of " + stock.name + " to sell!");
+
     }
 
 

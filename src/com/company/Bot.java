@@ -1,14 +1,17 @@
 package com.company;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 
 public class Bot {
     List<String> str = new ArrayList<>(List.of("Alpha", "Beta", "Delta", "Epsilon", "Gamma", "Lambda", "Omega", "Sigma", "Theta", "Zeta"));
+    Stock[] stockArr = new Stock[5];
+    ArrayList<Double>[] dataArray = new ArrayList[stockArr.length];//An array of Arraylists<Doubles>
+    double[] averages = new double[stockArr.length]; //need to set length of this array
 
     public void generateStocks()
     {
-        Stock[] stockArr = new Stock[5];
         Random rand = new Random();
         int random;
 
@@ -19,21 +22,73 @@ public class Bot {
             str.remove(random);
         }
     }
+
     public void oneDaySim()
     {
-        Investor person1 = new Investor("Frank", 5000);
-        Stock stock1 = new Stock("Alpha", 100);
-        Stock stock2 = new Stock("Beta", 95.0);
-        Stock stock3 = new Stock("Delta", 98.0);
-        stock1.printArray(stock1.pricesArray(100));
-        person1.buyStock(stock1, 5);
-        stock2.pricesArray(12);
-        person1.buyStock(stock2, 3);
-        stock3.pricesArray(15);
-        person1.buyStock(stock3, 10);
+        for(int i = 0; i < stockArr.length; i++)
+        {
+            stockArr[i].pricesArray(1);
+        }
+    }
+    public void generateData()
+    {
+        for(int i = 0; i < stockArr.length; i++)
+        {
+            //For every stock, prices for 100 days are created
+            dataArray[i] = stockArr[i].pricesArray(100);
+            //System.out.println(Arrays.toString(dataArray[i].toArray()));
+        }
+    }
+    public void generateStockAverages()
+    {
+        double total = 0;
+        generateData();
+        for (int i = 0; i < stockArr.length; i++)
+        {
+            for (int j = 0; j < dataArray.length; j++)
+            {
+                total += dataArray[i].get(j);
+            }
+            averages[i] = total/dataArray[i].size();
+        }
+    }
 
-        person1.sellStock(stock1, 3);
-        person1.sellStock(stock2, 15);
-        person1.sellStock(stock3, 8);
+    public void analysis()
+    {
+        Investor Frank = new Investor("Frank", 10000);
+        Investor John = new Investor("John", 10000);
+        double investFivePercent;
+        int dayCounter = 0;
+
+
+        while (dayCounter < 100)
+        {
+            generateStockAverages();
+            oneDaySim();
+            for(int i = 0; i < stockArr.length; i++)
+            {
+                if(stockArr[i].price < averages[i])
+                {
+                    investFivePercent = Frank.balance*0.05;
+                    Frank.buyStock(stockArr[i], (int)(investFivePercent/stockArr[i].price));
+                }
+                else if(stockArr[i].price > averages[i])
+                {
+                    if (Frank.stockList.containsKey(stockArr[i]))
+                    {
+                        Frank.sellStock(stockArr[i], Frank.stockList.get(stockArr[i]));
+                    }
+                }
+            }
+            dayCounter++;
+        }
+        Frank.printStockList();
+        System.out.println(Frank.balance);
+        /*for (int j = 0; j < Frank.stockList.size(); j++)
+        {
+            //Frank.stockList.get(j)*;
+            Frank.balance += Frank.sellStock(stockArr[], Frank.stockList.get(stockArr[i]));
+        }
+        System.out.println(Frank.balance);*/
     }
 }
